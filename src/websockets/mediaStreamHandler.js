@@ -26,10 +26,15 @@ export default function mediaStreamHandler(fastify) {
       });
 
       // Event: Deepgram WebSocket open
-      deepgramWs.on("open", () => {
+        deepgramWs.on("open", () => {
         console.log("[Deepgram] Connected");
+
+        // Assign to session object first
+        session.deepgramWs = deepgramWs;
+
+        // Now it's safe to use
         session.deepgramWs.send(JSON.stringify(SettingsConfiguration));
-      });
+        });
 
       // Event: Deepgram WebSocket close
       deepgramWs.on("close", () => {
