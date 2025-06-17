@@ -1,0 +1,22 @@
+{
+  "name": "twilio-deepgram-voice-assistant",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/formbody": "^8.0.2",
+    "@fastify/websocket": "^11.1.0",
+    "@supabase/supabase-js": "^2.50.0",
+    "dotenv": "^16.5.0",
+    "fastify": "^5.4.0",
+    "node-fetch": "^3.3.2",
+    "ws": "^8.18.2"
+  }
+}
