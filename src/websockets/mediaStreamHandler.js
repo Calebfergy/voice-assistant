@@ -2,15 +2,21 @@ import WebSocket from "ws";
 import { SettingsConfiguration } from "../SettingsConfiguration.js";
 import { DEEPGRAM_API_KEY } from "../config/dotenv.js";
 import { handleFunctionCall } from "../services/functionCallHandler.js";
+import { v4 as uuidv4 } from "uuid";
+const sessions = new Map(); // NEW: holds active sessions
 
 export default function mediaStreamHandler(fastify) {
   fastify.register(async (fastify) => {
     fastify.get("/media-stream", { websocket: true }, (connection, req) => {
-      console.log("[WS] Client connected");
-
-      // State variables
-      let streamSid = null;
-      let latestMediaTimestamp = 0;
+      const sessionId = uuidv4();
+      console.log(`[WS] Client connected — Session: ${sessionId}`);
+    
+      const session = {
+        streamSid: null,
+        latestMediaTimestamp: 0,
+        deepgramWs: null,
+      };
+      sessions.set(sessionId, session);
 
       // Initialize Deepgram WebSocket
       const deepgramWs = new WebSocket("wss://agent.deepgram.com/v1/agent/converse", {
@@ -22,7 +28,7 @@ export default function mediaStreamHandler(fastify) {
       // Event: Deepgram WebSocket open
       deepgramWs.on("open", () => {
         console.log("[Deepgram] Connected");
-        deepgramWs.send(JSON.stringify(SettingsConfiguration));
+        session.deepgramWs.send(JSON.stringify(SettingsConfiguration));
       });
 
       // Event: Deepgram WebSocket close
@@ -60,7 +66,7 @@ export default function mediaStreamHandler(fastify) {
             switch (response.type) {
               case "SettingsApplied":
                 console.log("[Deepgram] Settings applied successfully");
-                deepgramWs.send(
+                session.deepgramWs.send(
                   JSON.stringify({
                     type: "InjectAgentMessage",
                     content: "Thank you for calling RV Fix, my name is Sylvia, how can I help you today?"
@@ -96,7 +102,7 @@ export default function mediaStreamHandler(fastify) {
             case "media":
               latestMediaTimestamp = data.media.timestamp;
               if (deepgramWs && deepgramWs.readyState === WebSocket.OPEN) {
-                deepgramWs.send(Buffer.from(data.media.payload, "base64"));
+                session.deepgramWs.send(Buffer.from(data.media.payload, "base64"));
               }
               break;
             case "start":
