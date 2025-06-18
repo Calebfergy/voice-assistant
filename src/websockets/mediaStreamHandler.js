@@ -53,7 +53,7 @@ export default function mediaStreamHandler(fastify) {
           if (isBinary) {
             const audioDelta = {
               event: "media",
-              streamSid: streamSid,
+              streamSid: session.streamSid,
               media: { payload: Buffer.from(message).toString("base64") }
             };
 
@@ -61,7 +61,7 @@ export default function mediaStreamHandler(fastify) {
             connection.send(
               JSON.stringify({
                 event: "mark",
-                streamSid: streamSid,
+                streamSid: session.streamSid,
                 mark: { name: "responsePart" }
               })
             );
@@ -83,7 +83,7 @@ export default function mediaStreamHandler(fastify) {
                 break;
               case "UserStartedSpeaking":
                 console.log("[Deepgram] User started speaking");
-                connection.send(JSON.stringify({ event: "clear", streamSid }));
+                    connection.send(JSON.stringify({ event: "clear", streamSid: session.streamSid }));
                 break;
               case "FunctionCallRequest":
                 console.log("[Deepgram] Function call request: ", response);
@@ -105,15 +105,15 @@ export default function mediaStreamHandler(fastify) {
 
           switch (data.event) {
             case "media":
-              latestMediaTimestamp = data.media.timestamp;
-              if (deepgramWs && deepgramWs.readyState === WebSocket.OPEN) {
+              session.latestMediaTimestamp = data.media.timestamp;
+              if (session.deepgramWs && session.deepgramWs.readyState === WebSocket.OPEN) {
                 session.deepgramWs.send(Buffer.from(data.media.payload, "base64"));
               }
               break;
             case "start":
-              streamSid = data.start.streamSid;
-              console.log("[Twilio] Stream started. SID:", streamSid);
-              latestMediaTimestamp = 0;
+              session.streamSid = data.start.streamSid;
+              console.log("[Twilio] Stream started. SID:", session.streamSid);
+              session.latestMediaTimestamp = 0;
               break;
             default:
             // console.log("[Twilio] Non-media event: ", data.event);
