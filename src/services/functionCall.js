@@ -45,12 +45,12 @@ export const addToCallbackList = async ({ name, phone, location, concern }) => {
 
 
 // 📅 Schedule a tech appointment
-export const scheduleTechAppointment = async ({ tech_email, vin_number, service_request_id, start_date, end_date, time_zone }) => {
-  console.log("📅 Scheduling appointment:", { tech_email, vin_number, service_request_id, start_date, end_date, time_zone });
+export const scheduleTechAppointment = async ({ tech_email, vin_number, customer_email, service_request_id, start_date, end_date, time_zone }) => {
+  console.log("📅 Scheduling appointment:", { tech_email, vin_number, customer_email, service_request_id, start_date, end_date, time_zone });
 
   const { data, error } = await supabase
     .from("post_diagnostic_appointments")
-    .insert([{ tech_email, vin_number, service_request_id, start_date, end_date, time_zone }]);
+    .insert([{ tech_email, vin_number, customer_email, service_request_id, start_date, end_date, time_zone }]);
 
   if (error) {
     console.error("❌ Supabase error (schedule):", error);

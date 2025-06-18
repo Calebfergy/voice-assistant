@@ -58,6 +58,7 @@ Always validate information with the customer if it's something that is importan
                 properties: {
                 tech_email: { type: "string", description: "The technician's email address." },
                 vin_number: { type: "string", description: "The VIN number of the customer's RV" },
+                customer_email: { type: "string", description: "The Customer's preferred email" },
                 service_request_id: { type: "integer", description: "The ID of the linked service request" },
                 start_date: { type: "string", format: "date-time", description: "Appointment start time in ISO format" },
                 end_date: { type: "string", format: "date-time", description: "Appointment end time in ISO format" },

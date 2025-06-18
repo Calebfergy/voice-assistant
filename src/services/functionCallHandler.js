@@ -35,6 +35,7 @@ switch (funct.name) {
     result = await scheduleTechAppointment({
       tech_email: functArguments.tech_email,
       vin_number: functArguments.vin_number,
+      customer_email: functArguments.customer_email,
       service_request_id: functArguments.service_request_id,
       start_date: functArguments.start_date,
       end_date: functArguments.end_date,
