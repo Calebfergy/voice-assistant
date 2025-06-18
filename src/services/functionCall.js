@@ -100,3 +100,17 @@ export const getAvailableTechnicians = async ({ time_zone, service_request_id, s
 
   return data; // Deepgram will format this as JSON in the function response
 };
+
+
+// 🕒 Get current date/time
+export const getCurrentDateTime = async () => {
+  const now = new Date();
+  const date = now.toLocaleDateString("en-US", {
+    year: "numeric", month: "long", day: "numeric"
+  });
+  const time = now.toLocaleTimeString("en-US", {
+    hour: "2-digit", minute: "2-digit", second: "2-digit"
+  });
+
+  return `It is currently ${time} on ${date}.`;
+};

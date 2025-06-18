@@ -3,7 +3,8 @@ import {
   addToCallbackList,
   scheduleTechAppointment,
   getCustomerInfoByPhone,
-  getAvailableTechnicians
+  getAvailableTechnicians,
+  getCurrentDateTime // ← Add this
 } from "./functionCall.js";
 
 export async function handleFunctionCall(functions, deepgramWs) {
@@ -64,6 +65,10 @@ switch (funct.name) {
     console.warn(`Unknown function call name: ${funct.name}`);
     result = `I don't know how to handle the function: ${funct.name}`;
     break;
+
+    case "getCurrentDateTime":
+        result = await getCurrentDateTime();
+        break;
 }
 
 

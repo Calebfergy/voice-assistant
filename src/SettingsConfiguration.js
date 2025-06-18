@@ -112,6 +112,14 @@ Always validate information with the customer if it's something that is importan
             },
             required: ["city"]
           }
+        },
+        {
+        name: "getCurrentDateTime",
+        description: "Get the current time and date",
+        parameters: {
+            type: "object",
+            properties: {}
+        }
         }
       ]
     },
