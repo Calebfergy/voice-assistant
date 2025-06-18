@@ -98,7 +98,9 @@ export const getAvailableTechnicians = async ({ time_zone, service_request_id, s
     return "There are no available technicians in that time window.";
   }
 
-  return data; // Deepgram will format this as JSON in the function response
+  return data.map((tech, i) =>
+  `Technician ${i + 1}: ${tech.email}, available from ${tech.start} to ${tech.end} (${tech.day})`
+).join("\n");
 };
 
 
