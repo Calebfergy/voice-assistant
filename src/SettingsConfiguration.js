@@ -47,7 +47,7 @@ Always validate information with the customer if it's something that is importan
             offset: { type: "integer", default: 0 },
             limit: { type: "integer", default: 100 }
             },
-            required: ["time_zone", "service_request_id", "start_date", "end_date"]
+            required: ["time_zone", "start_date", "end_date"]
         }
         },
         {
@@ -115,7 +115,7 @@ Always validate information with the customer if it's something that is importan
         },
         {
         name: "getCurrentDateTime",
-        description: "Get the current time and date",
+        description: "Get the current date in Pacific Time",
         parameters: {
             type: "object",
             properties: {}
